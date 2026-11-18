@@ -38,16 +38,20 @@ Controla los origenes de conexion con CORS.
 
 Con manejo de errores y test con jest.
 * **Endpoints:**
-  * `GET /personas`: Devuelve un JSON (200 OK) con la lista de todos los intentos de ingreso registrados, sin permitir modificaciones.
-  * `POST /personas`: Recibe {name, age} en el cuerpo de la peticion, limpia y valida los datos con ZOD y devuelve: 
+  * `GET /persons`: Devuelve un JSON (200 OK) con la lista de todos los intentos de ingreso registrados, sin permitir modificaciones.
+  * `POST /persons`: Recibe {name, age} en el cuerpo de la peticion, limpia y valida los datos con ZOD y devuelve: 
   - 201 Created: si la persona es mayor de edad y tiene acceso concedido.
   - 403 Forbidden: si los datos son validos pero la persona es menor de edad
   - 400 Bad Request: Para datos malformados o incompletos (filtrados por ZOD)
-* **Archivos clave:**
-  * `bouncer-challenge/bouncer-api.js`
-  * `bouncer-challenge/schema/validations.js`
-  * `bouncer-challenge/test/bouncer-api.test.js`
 
+* **Archivos clave:**
+ * `bouncer-challenge/app.js`
+ * `bouncer-challenge/routes/persons.js`
+ * `bouncer-challenge/controllers/persons.js`
+ * `bouncer-challenge/models/local-memory/bouncer.js`
+ * `bouncer-challenge/middlewares/cors.js`
+ * `bouncer-challenge/schemas/validations.js`
+ * `bouncer-challenge/test/bouncer-api.test.js`
 ---
 
 ## ⚙️ Instalación y Ejecución
@@ -75,7 +79,7 @@ npm test
 
 ## 💡 Aprendizajes Clave
 * API-Challenge: Practica y consolidacion de los metodos GET, POST, PUT, PATCH, DELETE. Del lado cliente
-* Bouncer-Challenge: Validaciones con ZOD, manejo de origenes con CORS, creacion de API rest y practica de clases privadas 
+* Bouncer-Challenge: Validaciones con ZOD, manejo de origenes con CORS, creacion de API rest y practica de clases privadas, estructurado bajo arquitectura MVC desacoplada
 
 ---
 
