@@ -1,5 +1,6 @@
 /* global describe, test, expect, beforeAll, afterAll */
-import { app, Bouncer } from '../bouncer-api.js'
+import { app } from '../app.js'
+import { Bouncer } from '../models/local-memory/bouncer.js'
 const bouncer = new Bouncer()
 
 describe('Test for Bouncer challenge', () => {
@@ -40,7 +41,7 @@ describe('Test for HTTP', () => {
     server.close()
   })
   test('Successful POST strips extra properties and returns 201', async () => {
-    const res = await fetch(`${baseUrl}/personas`, {
+    const res = await fetch(`${baseUrl}/persons`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -59,7 +60,7 @@ describe('Test for HTTP', () => {
     expect(data.allowed).toBe(true)
   })
   test('Minor aged POST returns 403', async () => {
-    const res = await fetch(`${baseUrl}/personas`, {
+    const res = await fetch(`${baseUrl}/persons`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -76,7 +77,7 @@ describe('Test for HTTP', () => {
     expect(data.reason).toBe('Edad insuficiente')
   })
   test('Wrong data in POST returns 400', async () => {
-    const res = await fetch(`${baseUrl}/personas`, {
+    const res = await fetch(`${baseUrl}/persons`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -93,14 +94,14 @@ describe('Test for HTTP', () => {
     expect(data.error.length).toBeGreaterThan(0)
   })
   test('Simple GET returns 200', async () => {
-    const res = await fetch(`${baseUrl}/personas`)
+    const res = await fetch(`${baseUrl}/persons`)
     const data = await res.json()
 
     expect(res.status).toBe(200)
     expect(data.length).toBe(2)
   })
   test('Authorized GET returns 200', async () => {
-    const res = await fetch(`${baseUrl}/personas`, {
+    const res = await fetch(`${baseUrl}/persons`, {
       method: 'GET',
       headers: {
         Origin: 'http://localhost:8080'
@@ -111,7 +112,7 @@ describe('Test for HTTP', () => {
     expect(res.headers.get('access-control-allow-origin')).toBe('http://localhost:8080')
   })
   test('Malicious GET returns 500', async () => {
-    const res = await fetch(`${baseUrl}/personas`, {
+    const res = await fetch(`${baseUrl}/persons`, {
       method: 'GET',
       headers: {
         Origin: 'http://hacker-site.com'

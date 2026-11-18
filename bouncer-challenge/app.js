@@ -18,71 +18,17 @@
  *    - Crea una ruta para poder revisar la lista completa de los registros guardados hasta el momento.
  */
 import express from 'express'
-import cors from 'cors'
-import { validatePerson } from './schema/validations.js'
+
+import { corsMiddleware } from './middlewares/cors.js'
+import { personRouter } from './routes/persons.js'
 
 const app = express()
-app.disable('x-powered-by')
 app.use(express.json())
+app.disable('x-powered-by')
 
-const ACCEPTED_ORIGINS = [
-  'http://localhost:4321',
-  'http://localhost:8080'
-]
+app.use(corsMiddleware())
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (ACCEPTED_ORIGINS.includes(origin)) {
-      return callback(null, true)
-    }
-    if (!origin) {
-      return callback(null, true)
-    }
-
-    return callback(new Error('Not allowed by CORS'))
-  }
-}))
-
-class Bouncer {
-  #entry = []
-  get entry () {
-    return [...this.#entry]
-  }
-
-  check ({ name, age }) {
-    if (age < 18) {
-      const denied = ({ name, age, allowed: false, reason: 'Edad insuficiente', timeStamp: new Date().toISOString() })
-      this.#entry.push(denied)
-      return denied
-    } else if (age >= 18) {
-      const permited = ({ name, age, allowed: true, reason: 'Acceso concedido, mayor de edad', timeStamp: new Date().toISOString() })
-
-      this.#entry.push(permited)
-      return permited
-    }
-  }
-}
-
-const bouncer = new Bouncer()
-
-app.get('/personas', (req, res) => {
-  res.json(bouncer.entry)
-})
-
-app.post('/personas', (req, res) => {
-  const validation = validatePerson(req.body)
-
-  if (!validation.success) {
-    return res.status(400).json({ error: validation.error.issues })
-  }
-
-  const result = bouncer.check(validation.data)
-
-  if (result.allowed === true) {
-    return res.status(201).json(result)
-  }
-  res.status(403).json(result)
-})
+app.use('/persons', personRouter)
 
 const PORT = process.env.PORT ?? 4321
 
@@ -92,4 +38,4 @@ if (process.env.NODE_ENV !== 'test') {
   })
 }
 
-export { app, Bouncer }
+export { app }

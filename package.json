@@ -5,7 +5,7 @@
   "description": "Mi laboratorio propio de desafíos backend",
   "scripts": {
     "challenge:api": "node --watch apichallenge/src/api.js",
-    "challenge:bouncer": "node --watch bouncer-challenge/bouncer-api.js",
+    "challenge:bouncer": "node --watch bouncer-challenge/app.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
