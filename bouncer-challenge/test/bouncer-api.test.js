@@ -1,7 +1,10 @@
 /* global describe, test, expect, beforeAll, afterAll */
-import { app } from '../app.js'
-import { Bouncer } from '../models/local-memory/bouncer.js'
+
+import { createApp } from '../app.js'
+import { Bouncer, PersonModel } from '../models/local-memory/bouncer.js'
+
 const bouncer = new Bouncer()
+const app = createApp({ personModel: PersonModel })
 
 describe('Test for Bouncer challenge', () => {
   test('Succesful POST', () => {

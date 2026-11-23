@@ -5,7 +5,8 @@
   "description": "Mi laboratorio propio de desafíos backend",
   "scripts": {
     "challenge:api": "node --watch apichallenge/src/api.js",
-    "challenge:bouncer": "node --watch bouncer-challenge/app.js",
+    "challenge:bouncer:mysql": "node --watch bouncer-challenge/server-with-mysql.js",
+  "challenge:bouncer:local": "node --watch bouncer-challenge/server-with-local.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
@@ -14,6 +15,7 @@
   "dependencies": {
     "cors": "2.8.6",
     "express": "5.3.0",
+    "mysql2": "3.24.6",
     "zod": "4.6.7"
   },
   "devDependencies": {

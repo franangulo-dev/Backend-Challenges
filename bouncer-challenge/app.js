@@ -18,24 +18,23 @@
  *    - Crea una ruta para poder revisar la lista completa de los registros guardados hasta el momento.
  */
 import express from 'express'
-
 import { corsMiddleware } from './middlewares/cors.js'
-import { personRouter } from './routes/persons.js'
+import { createPersonRouter } from './routes/persons.js'
 
-const app = express()
-app.use(express.json())
-app.disable('x-powered-by')
+export const createApp = ({ personModel }) => {
+  const app = express()
+  app.use(express.json())
+  app.use(corsMiddleware())
+  app.disable('x-powered-by')
 
-app.use(corsMiddleware())
+  app.use('/persons', createPersonRouter({ personModel }))
 
-app.use('/persons', personRouter)
+  const PORT = process.env.PORT ?? 4321
 
-const PORT = process.env.PORT ?? 4321
-
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`engine running on Port: ${PORT}`)
-  })
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+      console.log(`engine running on Port: ${PORT}`)
+    })
+  }
+  return app
 }
-
-export { app }
